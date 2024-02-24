@@ -1,0 +1,449 @@
+//this is a disaster pretty much
+
+local ptcpr_globalsagesjcancel = CV_RegisterVar({
+    name = "globalsagesjcancel",
+    defaultvalue = "0",
+    flags = CV_SHOWMODIF|CV_SAVE,
+    PossibleValue = CV_OnOff
+})
+
+local ptcpr_standingsj = CV_RegisterVar({
+    name = "standingsj",
+    defaultvalue = "0",
+    flags = CV_SHOWMODIF|CV_SAVE,
+    PossibleValue = CV_OnOff
+})
+
+freeslot("SPR2_SJCH","SPR2_SJUM","S_PLAY_SUPERJUMP_CHARGE","S_PLAY_SUPERJUMP","S_PLAY_NOISESNICK_CHARGE","S_PLAY_NOISE_SUPERJUMP","S_PLAY_SNICK_SUPERJUMP","SPR2_SJCN","S_PLAY_SUPERJUMP_CANCEL","S_PLAY_NOISE_SUPERJUMP_CANCEL","sfx_psjh","sfx_psjr","sfx_psjc","SPR2_SJCS","S_PLAY_SUPERJUMP_CANCEL_START","S_PLAY_NOISE_SUPERJUMP_CANCEL_START","S_PLAY_FAKEPEP_SUPERJUMP","S_PLAY_FAKEPEP_SUPERJUMP_CHARGE","sfx_fsjh","sfx_fsjr")
+
+states[S_PLAY_SUPERJUMP_CHARGE].sprite = SPR_PLAY
+states[S_PLAY_SUPERJUMP_CHARGE].frame = SPR2_SJCH|FF_ANIMATE
+states[S_PLAY_SUPERJUMP_CHARGE].var1 = 1
+states[S_PLAY_SUPERJUMP_CHARGE].var2 = 3
+states[S_PLAY_SUPERJUMP_CHARGE].tics = -1
+states[S_PLAY_SUPERJUMP_CHARGE].nextstate = S_PLAY_SUPERJUMP_CHARGE
+
+states[S_PLAY_NOISESNICK_CHARGE].sprite = SPR_PLAY
+states[S_PLAY_NOISESNICK_CHARGE].frame = SPR2_SJCH|FF_ANIMATE
+states[S_PLAY_NOISESNICK_CHARGE].var1 = 2
+states[S_PLAY_NOISESNICK_CHARGE].var2 = 3
+states[S_PLAY_NOISESNICK_CHARGE].tics = -1
+states[S_PLAY_NOISESNICK_CHARGE].nextstate = S_PLAY_NOISESNICK_CHARGE
+
+states[S_PLAY_SUPERJUMP].sprite = SPR_PLAY
+states[S_PLAY_SUPERJUMP].frame = SPR2_SJUM|FF_ANIMATE
+states[S_PLAY_SUPERJUMP].var1 = 7
+states[S_PLAY_SUPERJUMP].var2 = 3
+states[S_PLAY_SUPERJUMP].tics = -1
+states[S_PLAY_SUPERJUMP].nextstate = S_PLAY_SUPERJUMP
+
+states[S_PLAY_SUPERJUMP_CANCEL].sprite = SPR_PLAY
+states[S_PLAY_SUPERJUMP_CANCEL].frame = SPR2_SJCN|FF_ANIMATE
+states[S_PLAY_SUPERJUMP_CANCEL].var1 = 3
+states[S_PLAY_SUPERJUMP_CANCEL].var2 = 3
+states[S_PLAY_SUPERJUMP_CANCEL].tics = -1
+states[S_PLAY_SUPERJUMP_CANCEL].nextstate = S_PLAY_SUPERJUMP_CANCEL
+
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL].sprite = SPR_PLAY
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL].frame = SPR2_SJCN|FF_ANIMATE
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL].var1 = 2
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL].var2 = 3
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL].tics = -1
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL].nextstate = S_PLAY_NOISE_SUPERJUMP_CANCEL
+
+states[S_PLAY_SUPERJUMP_CANCEL_START].sprite = SPR_PLAY
+states[S_PLAY_SUPERJUMP_CANCEL_START].frame = FF_SPR2ENDSTATE|SPR2_SJCS|FF_ANIMATE|A
+states[S_PLAY_SUPERJUMP_CANCEL_START].var1 = S_PLAY_SUPERJUMP_CANCEL
+states[S_PLAY_SUPERJUMP_CANCEL_START].var2 = 2
+states[S_PLAY_SUPERJUMP_CANCEL_START].tics = 25
+states[S_PLAY_SUPERJUMP_CANCEL_START].nextstate = S_PLAY_SUPERJUMP_CANCEL
+
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL_START].sprite = SPR_PLAY
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL_START].frame = FF_SPR2ENDSTATE|SPR2_SJCS|FF_ANIMATE|A
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL_START].var1 = S_PLAY_NOISE_SUPERJUMP_CANCEL
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL_START].var2 = 2
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL_START].tics = 25
+states[S_PLAY_NOISE_SUPERJUMP_CANCEL_START].nextstate = S_PLAY_NOISE_SUPERJUMP_CANCEL
+
+states[S_PLAY_NOISE_SUPERJUMP].sprite = SPR_PLAY
+states[S_PLAY_NOISE_SUPERJUMP].frame = SPR2_SJUM|FF_ANIMATE
+states[S_PLAY_NOISE_SUPERJUMP].var1 = 3
+states[S_PLAY_NOISE_SUPERJUMP].var2 = 3
+states[S_PLAY_NOISE_SUPERJUMP].tics = -1
+states[S_PLAY_NOISE_SUPERJUMP].nextstate = S_PLAY_NOISE_SUPERJUMP
+
+states[S_PLAY_SNICK_SUPERJUMP].sprite = SPR_PLAY
+states[S_PLAY_SNICK_SUPERJUMP].frame = SPR2_SJUM|FF_ANIMATE
+states[S_PLAY_SNICK_SUPERJUMP].var1 = 2
+states[S_PLAY_SNICK_SUPERJUMP].var2 = 3
+states[S_PLAY_SNICK_SUPERJUMP].tics = -1
+states[S_PLAY_SNICK_SUPERJUMP].nextstate = S_PLAY_SNICK_SUPERJUMP
+
+states[S_PLAY_FAKEPEP_SUPERJUMP_CHARGE].sprite = SPR_PLAY
+states[S_PLAY_FAKEPEP_SUPERJUMP_CHARGE].frame = SPR2_SJCH|FF_ANIMATE
+states[S_PLAY_FAKEPEP_SUPERJUMP_CHARGE].var1 = 1
+states[S_PLAY_FAKEPEP_SUPERJUMP_CHARGE].var2 = 3
+states[S_PLAY_FAKEPEP_SUPERJUMP_CHARGE].tics = -1
+states[S_PLAY_FAKEPEP_SUPERJUMP_CHARGE].nextstate = S_PLAY_FAKEPEP_SUPERJUMP_CHARGE
+
+states[S_PLAY_FAKEPEP_SUPERJUMP].sprite = SPR_PLAY
+states[S_PLAY_FAKEPEP_SUPERJUMP].frame = SPR2_SJUM|FF_ANIMATE
+states[S_PLAY_FAKEPEP_SUPERJUMP].var1 = 2
+states[S_PLAY_FAKEPEP_SUPERJUMP].var2 = 3
+states[S_PLAY_FAKEPEP_SUPERJUMP].tics = -1
+states[S_PLAY_FAKEPEP_SUPERJUMP].nextstate = S_PLAY_FAKEPEP_SUPERJUMP
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+	    if player.mo.superjumpcharge == nil
+			player.mo.superjumpcharge = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+	    if player.mo.fakepepsuperjumpcharge == nil
+			player.mo.fakepepsuperjumpcharge = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+	    if player.mo.noisesuperjumpcharge == nil
+			player.mo.noisesuperjumpcharge = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+	    if player.mo.superjump == nil
+			player.mo.superjump = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+	    if player.mo.fakepepsuperjump == nil
+			player.mo.fakepepsuperjump = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+	    if player.mo.noisesuperjump == nil
+			player.mo.noisesuperjump = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+	    if player.mo.snicksuperjump == nil
+			player.mo.snicksuperjump = 0
+		end
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rpeppino" then
+		if player.dashmode >= 3*TICRATE and (player.cmd.buttons & BT_CUSTOM1) and P_IsObjectOnGround(player.mo) and not (player.mo.superjumpcharge) and (ptcpr_standingsj.value == 0)
+			player.mo.superjumpcharge = 1
+		end
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rfakepep" then
+		if player.dashmode >= 3*TICRATE and (player.cmd.buttons & BT_CUSTOM1) and P_IsObjectOnGround(player.mo) and not (player.mo.fakepepsuperjumpcharge) and (ptcpr_standingsj.value == 0)
+			player.mo.fakepepsuperjumpcharge = 1
+		end
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rnoise" or player.mo.skin == "rsnick" then
+		if player.dashmode >= 3*TICRATE and (player.cmd.buttons & BT_CUSTOM1) and P_IsObjectOnGround(player.mo) and not (player.mo.noisesuperjumpcharge) and (ptcpr_standingsj.value == 0)
+			player.mo.noisesuperjumpcharge = 1
+		end
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rpeppino" then
+		if (player.speed == 0) and (player.cmd.buttons & BT_CUSTOM1) and P_IsObjectOnGround(player.mo) and not (player.mo.superjumpcharge) and (ptcpr_standingsj.value == 1) and not (player.mo.superjump)
+			player.mo.superjumpcharge = 1
+		end
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rfakepep" then
+		if (player.speed == 0) and (player.cmd.buttons & BT_CUSTOM1) and P_IsObjectOnGround(player.mo) and not (player.mo.fakepepsuperjumpcharge) and (ptcpr_standingsj.value == 1) and not (player.mo.superjump)
+			player.mo.fakepepsuperjumpcharge = 1
+		end
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rnoise" or player.mo.skin == "rsnick" then
+		if (player.speed == 0) and (player.cmd.buttons & BT_CUSTOM1) and P_IsObjectOnGround(player.mo) and not (player.mo.noisesuperjumpcharge) and (ptcpr_standingsj.value == 1) and not (player.mo.superjump)
+			player.mo.noisesuperjumpcharge = 1
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.superjumpcharge)
+		and not (player.cmd.buttons & BT_CUSTOM1)
+		and P_IsObjectOnGround(player.mo)
+		S_StopSoundByID(player.mo, sfx_psjh)
+		S_StartSound(player.mo, sfx_psjr)
+		player.mo.superjumpcharge = false
+		player.mo.superjump = true
+		end
+	end
+end)
+
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.noisesuperjumpcharge) and player.mo.skin == "rnoise"
+		and not (player.cmd.buttons & BT_CUSTOM1)
+		and P_IsObjectOnGround(player.mo)
+		S_StopSoundByID(player.mo, sfx_psjh)
+		S_StartSound(player.mo, sfx_psjr)
+		player.mo.noisesuperjumpcharge = false
+		player.mo.noisesuperjump = true
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.noisesuperjumpcharge) and player.mo.skin == "rsnick"
+		and not (player.cmd.buttons & BT_CUSTOM1)
+		and P_IsObjectOnGround(player.mo)
+		S_StopSoundByID(player.mo, sfx_psjh)
+		S_StartSound(player.mo, sfx_psjr)
+		player.mo.noisesuperjumpcharge = false
+		player.mo.snicksuperjump = true
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.fakepepsuperjumpcharge) and player.mo.skin == "rfakepep"
+		and not (player.cmd.buttons & BT_CUSTOM1)
+		and P_IsObjectOnGround(player.mo)
+		S_StopSoundByID(player.mo, sfx_fsjh)
+		S_StartSound(player.mo, sfx_fsjr)
+		player.mo.fakepepsuperjumpcharge = false
+		player.mo.fakepepsuperjump = true
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.superjump)
+		player.mo.superjump = true
+		P_InstaThrust(player.mo, player.mo.angle, 0*FRACUNIT)
+		P_SetObjectMomZ(player.mo, 32*FRACUNIT, false)
+		player.mo.state = S_PLAY_SUPERJUMP
+		player.pflags = $|PF_JUMPSTASIS
+		player.normalspeed = skins[player.mo.skin].normalspeed
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.noisesuperjump)
+		player.mo.noisesuperjump = true
+		P_InstaThrust(player.mo, player.mo.angle, 0*FRACUNIT)
+		P_SetObjectMomZ(player.mo, 32*FRACUNIT, false)
+		player.mo.state = S_PLAY_NOISE_SUPERJUMP
+		player.pflags = $|PF_JUMPSTASIS
+		player.normalspeed = skins[player.mo.skin].normalspeed
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.snicksuperjump)
+		player.mo.snicksuperjump = true
+		P_InstaThrust(player.mo, player.mo.angle, 0*FRACUNIT)
+		P_SetObjectMomZ(player.mo, 32*FRACUNIT, false)
+		player.mo.state = S_PLAY_SNICK_SUPERJUMP
+		player.pflags = $|PF_JUMPSTASIS
+		player.normalspeed = skins[player.mo.skin].normalspeed
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.fakepepsuperjump)
+		player.mo.fakepepsuperjump = true
+		P_InstaThrust(player.mo, player.mo.angle, 0*FRACUNIT)
+		P_SetObjectMomZ(player.mo, 32*FRACUNIT, false)
+		player.mo.state = S_PLAY_FAKEPEP_SUPERJUMP
+		player.pflags = $|PF_JUMPSTASIS
+		player.normalspeed = skins[player.mo.skin].normalspeed
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.superjumpcharge)
+		player.mo.state = S_PLAY_SUPERJUMP_CHARGE
+		player.pflags = $|PF_JUMPSTASIS
+		player.normalspeed = 5*FRACUNIT
+		player.dashmode = 0
+		player.pflags = $ & ~PF_SPINNING
+		if not (S_SoundPlaying(player.mo, sfx_psjh))
+			S_StartSound(player.mo, sfx_psjh)
+			end
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.noisesuperjumpcharge)
+		player.mo.state = S_PLAY_NOISESNICK_CHARGE
+		player.pflags = $|PF_JUMPSTASIS
+		player.normalspeed = 5*FRACUNIT
+		player.dashmode = 0
+		player.pflags = $ & ~PF_SPINNING
+		if not (S_SoundPlaying(player.mo, sfx_psjh))
+			S_StartSound(player.mo, sfx_psjh)
+			end
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.fakepepsuperjumpcharge)
+		player.mo.state = S_PLAY_FAKEPEP_SUPERJUMP_CHARGE
+		player.pflags = $|PF_JUMPSTASIS
+		player.normalspeed = 5*FRACUNIT
+		player.dashmode = 0
+		player.pflags = $ & ~PF_SPINNING
+		if not (S_SoundPlaying(player.mo, sfx_fsjh))
+			S_StartSound(player.mo, sfx_fsjh)
+			end
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.superjump) and (player.cmd.buttons & BT_SPIN)  and (ptcpr_globalsagesjcancel.value == 0)
+		S_StopSoundByID(player.mo, sfx_psjr)
+		S_StartSound(player.mo, sfx_psjc)
+		player.mo.state = S_PLAY_SUPERJUMP_CANCEL_START
+		player.mo.superjump = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.noisesuperjump) and (player.cmd.buttons & BT_SPIN)  and (ptcpr_globalsagesjcancel.value == 0)
+		S_StopSoundByID(player.mo, sfx_psjr)
+		S_StartSound(player.mo, sfx_psjc)
+		player.mo.state = S_PLAY_NOISE_SUPERJUMP_CANCEL_START
+		player.mo.noisesuperjump = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.snicksuperjump) and (player.cmd.buttons & BT_SPIN)
+		P_InstaThrust(player.mo, player.mo.angle, 50*FRACUNIT)
+		P_SetObjectMomZ(player.mo, 0*FRACUNIT, false)
+		player.dashmode = DASHMODE_MAX
+		player.mo.state = S_PLAY_DASH
+		player.mo.snicksuperjump = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.superjump) and (player.cmd.buttons & BT_SPIN) and (ptcpr_globalsagesjcancel.value == 1)
+		P_InstaThrust(player.mo, player.mo.angle, 50*FRACUNIT)
+		P_SetObjectMomZ(player.mo, 0*FRACUNIT, false)
+		player.dashmode = DASHMODE_MAX
+		player.mo.state = S_PLAY_DASH
+		player.mo.superjump = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.noisesuperjump) and (player.cmd.buttons & BT_SPIN) and (ptcpr_globalsagesjcancel.value == 1)
+		P_InstaThrust(player.mo, player.mo.angle, 50*FRACUNIT)
+		P_SetObjectMomZ(player.mo, 0*FRACUNIT, false)
+		player.dashmode = DASHMODE_MAX
+		player.mo.state = S_PLAY_DASH
+		player.mo.noisesuperjump = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if (player.mo.fakepepsuperjump) and (player.cmd.buttons & BT_SPIN)
+		P_InstaThrust(player.mo, player.mo.angle, 50*FRACUNIT)
+		P_SetObjectMomZ(player.mo, 0*FRACUNIT, false)
+		player.dashmode = DASHMODE_MAX
+		player.mo.state = S_PLAY_DASH
+		player.mo.fakepepsuperjump = 0
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if player.mo.state == S_PLAY_SUPERJUMP_CANCEL_START or player.mo.state == S_PLAY_NOISE_SUPERJUMP_CANCEL_START then
+			P_SetObjectMomZ(player.mo, 0*FRACUNIT, false)
+			P_InstaThrust(player.mo, player.mo.angle, 0*FRACUNIT)
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if player.mo.state == S_PLAY_SUPERJUMP_CANCEL and not (player.pflags & PF_THOKKED) then
+			P_InstaThrust(player.mo, player.mo.angle, 50*FRACUNIT)
+			player.pflags = $|PF_THOKKED
+			player.dashmode = DASHMODE_MAX
+			P_SetObjectMomZ(player.mo, 3*FRACUNIT, false)
+		end
+	end
+end)
+
+addHook("ThinkFrame", do
+	for player in players.iterate
+		if player.mo.state == S_PLAY_NOISE_SUPERJUMP_CANCEL and not (player.pflags & PF_THOKKED) then
+			P_InstaThrust(player.mo, player.mo.angle, 50*FRACUNIT)
+			player.pflags = $|PF_THOKKED
+			player.dashmode = DASHMODE_MAX
+			P_SetObjectMomZ(player.mo, 3*FRACUNIT, false)
+		end
+	end
+end)

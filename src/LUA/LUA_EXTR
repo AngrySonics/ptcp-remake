@@ -1,0 +1,29 @@
+//candidate system
+
+if not PizzaTowerAICandidates
+	rawset(_G, "PizzaTowerAICandidates", {})
+end
+
+/*
+	Add candidate for Afterimages.
+	Stuff to put:
+	-isspecial : Sets PTAI Specical char for that skin. Best for characters with custom dashmodes
+	-cmdcustom : Allows the player's custom colors
+	-skincustom : Replaces vanilla styles & colors to use the ones youve set
+	-sc1 : (if skincustom) First afterimages's color. For use with skincustom. 
+	-sc2 : (if skincustom) Second afterimages's color. For use with skincustom. 
+
+	PizzaTowerAICandidates["exampleskin"] = {false, true, false}
+
+*/
+rawset(_G, "InitPTAIChars", function()
+PizzaTowerAICandidates["rpeppino"] = {false, true, false}
+PizzaTowerAICandidates["rnoise"] = {false, true, false}
+PizzaTowerAICandidates["rsnick"] = {false, true, false}
+PizzaTowerAICandidates["rfakepep"] = {false, true, false}
+end)
+InitPTAIChars()
+//i really shouldnt have to do this
+addHook("NetVars", function(net)
+	PizzaTowerAICandidates = net(PizzaTowerAICandidates)
+end)

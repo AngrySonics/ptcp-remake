@@ -1,0 +1,35 @@
+//original lua's that one thok example LUA
+freeslot("SPR2_DJUM","SPR2_DJUF","S_PLAY_NOISE_DOUBLEJUMP","S_PLAY_NOISE_DOUBLEJUMP_FALLIHAVENOIDEAWHATIMFUCKINGDOING")
+states[S_PLAY_NOISE_DOUBLEJUMP].sprite = SPR_PLAY
+states[S_PLAY_NOISE_DOUBLEJUMP].frame = SPR2_DJUM|FF_ANIMATE
+states[S_PLAY_NOISE_DOUBLEJUMP].var1 = S_PLAY_NOISE_DOUBLEJUMP_FALLIHAVENOIDEAWHATIMFUCKINGDOING
+states[S_PLAY_NOISE_DOUBLEJUMP].var2 = 2
+states[S_PLAY_NOISE_DOUBLEJUMP].tics = 25
+states[S_PLAY_NOISE_DOUBLEJUMP].nextstate = S_PLAY_NOISE_DOUBLEJUMP_FALLIHAVENOIDEAWHATIMFUCKINGDOING
+
+states[S_PLAY_NOISE_DOUBLEJUMP_FALLIHAVENOIDEAWHATIMFUCKINGDOING].sprite = SPR_PLAY
+states[S_PLAY_NOISE_DOUBLEJUMP_FALLIHAVENOIDEAWHATIMFUCKINGDOING].frame = SPR2_DJUF|FF_ANIMATE
+states[S_PLAY_NOISE_DOUBLEJUMP_FALLIHAVENOIDEAWHATIMFUCKINGDOING].var1 = 2
+states[S_PLAY_NOISE_DOUBLEJUMP_FALLIHAVENOIDEAWHATIMFUCKINGDOING].var2 = 2
+states[S_PLAY_NOISE_DOUBLEJUMP_FALLIHAVENOIDEAWHATIMFUCKINGDOING].tics = -1
+states[S_PLAY_NOISE_DOUBLEJUMP_FALLIHAVENOIDEAWHATIMFUCKINGDOING].nextstate = S_PLAY_NOISE_DOUBLEJUMP_FALLIHAVENOIDEAWHATIMFUCKINGDOING
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rnoise"
+		if (player.cmd.buttons & BT_CUSTOM2) and not (player.mo.noisesuperjumpcharge) and not P_IsObjectOnGround(player.mo)
+			if not (player.mo.noisesuperjump)
+				if player.mo.state != S_PLAY_NOISE_SUPERJUMP_CANCEL
+					if player.mo.state != S_PLAY_NOISE_SUPERJUMP_CANCEL_START
+						if player.pflags&PF_THOKKED
+							return true
+						end
+						P_SetObjectMomZ(player.mo, 12*FRACUNIT, false)
+						player.mo.state = S_PLAY_NOISE_DOUBLEJUMP
+						player.pflags = $|PF_THOKKED 
+						return true
+					end
+				end
+			end
+		end
+	end
+end)

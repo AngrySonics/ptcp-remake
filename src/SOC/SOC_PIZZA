@@ -1,0 +1,42 @@
+Character
+SkinName = rpeppino
+DisplayName = Peppino
+PlayerText = Peppino breaks through enemies and walls to foil Dr. Eggman's plan!
+
+Ability: Super Jump
+Currently the only ability he has. Hold Custom 1 in Mach 3 to charge a Super Jump, and press Spin after releasing to cancel.
+
+Tip: Touch a horizontal spring to get boosted into Mach 3!
+#
+
+Character
+SkinName = rnoise
+DisplayName = The#Noise
+TagTextColor = SKINCOLOR_YELLOW
+TagOutlineColor = SKINCOLOR_BLACK
+PlayerText = ^2The Noise^0 bounces his way through the zones!
+
+^2Ability^0: Pogo Stick
+Functions like the one from the original PTCP. Boring!
+
+^2Ability^0: Double Jump
+Press Custom 2 in the air to double jump with your jetpack. May or may not save you from platforming gone horribly wrong.
+#
+
+Character
+SkinName = rsnick
+DisplayName = Snick
+PlayerText = It's ^9Snick^0, your favorite armless porcupine.
+
+^9Ability^0: Thok
+His ability from pretty much every single SRB2 Pizza Tower mod. Boosts him into Mach 2. Enable it with extrasnickabilities.
+#
+
+Character
+SkinName = rfakepep
+DisplayName = Fake#Peppino
+PlayerText = Fake Peppino is Peppino's doppelganger, pretty much.
+
+Ability: Super Jump
+literally the same one Peppino has
+#

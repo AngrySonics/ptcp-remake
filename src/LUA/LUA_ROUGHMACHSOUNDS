@@ -1,0 +1,76 @@
+freeslot(
+"sfx_ptm2",
+"sfx_ptm3",
+"sfx_ptm4",
+"sfx_fmach"
+)
+
+addHook("PlayerThink", function(p)
+	if p.mo.skin == 'rpeppino' or p.mo.skin == 'rnoise' or p.mo.skin == 'rsnick' or p.mo.skin == 'rfakepep'
+		if S_SoundPlaying(p.mo, sfx_kc4d)
+			S_StopSoundByID(p.mo, sfx_kc4d)
+		end
+	end
+end)
+
+addHook("PlayerThink", function(p)
+	if p.mo.skin == 'rpeppino' or p.mo.skin == 'rnoise' or p.mo.skin == 'rsnick' or p.mo.skin == 'rfakepep'
+		if S_SoundPlaying(p.mo, sfx_kc65)
+			S_StopSoundByID(p.mo, sfx_kc65)
+		end
+	end
+end)
+
+addHook("PlayerThink", function(p)
+	if p.mo.state == S_PLAY_RUN or p.mo.state == S_PLAY_CLIMB then
+		if p.mo.skin == 'rpeppino' or p.mo.skin == 'rnoise' or p.mo.skin == 'rsnick' 
+			if not S_SoundPlaying(p.mo, sfx_ptm2)
+				S_StartSound(p.mo, sfx_ptm2)
+			end
+		end
+	 else
+		S_StopSoundByID(p.mo, sfx_ptm2)
+	end
+end)
+
+addHook("PlayerThink", function(p)
+	if p.dashmode >= 3*TICRATE and not (p.mo.fakepepsuperjump) then
+		if p.mo.skin == 'rfakepep'
+			if not S_SoundPlaying(p.mo, sfx_fmach)
+				S_StartSound(p.mo, sfx_fmach)
+			end
+		end
+	 else
+		S_StopSoundByID(p.mo, sfx_fmach)
+	end
+end)
+
+addHook("PlayerThink", function(p)
+	if p.dashmode >= 3*TICRATE
+		if not (p.speed >= 70*FRACUNIT)
+			if p.mo.skin == 'rpeppino' or p.mo.skin == 'rnoise' or p.mo.skin == 'rsnick'
+				if not S_SoundPlaying(p.mo, sfx_ptm3)
+					S_StartSound(p.mo, sfx_ptm3)
+				end
+			end
+		end
+	else
+		S_StopSoundByID(p.mo, sfx_ptm3)
+	end
+end)
+
+addHook("PlayerThink", function(p)
+	if p.mo.state == S_PLAY_PEPPINO_MACH4 or p.mo.state == S_PLAY_NOISE_MACH4 or p.mo.state == S_PLAY_SNICK_MACH4 then
+		if not S_SoundPlaying(p.mo, sfx_ptm4)
+			S_StartSound(p.mo, sfx_ptm4)
+		end
+	else
+		S_StopSoundByID(p.mo, sfx_ptm4)
+	end
+end)
+
+addHook("PlayerThink", function(p)
+	if p.mo.state == S_PLAY_PEPPINO_MACH4 or p.mo.state == S_PLAY_NOISE_MACH4 or p.mo.state == S_PLAY_SNICK_MACH4 then
+		S_StopSoundByID(p.mo, sfx_ptm3)
+	end
+end)

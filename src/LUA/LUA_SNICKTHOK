@@ -1,0 +1,39 @@
+//original lua's that one thok example LUA
+local ptcpr_snickabilitything = CV_RegisterVar({
+    name = "extrasnickabilities",
+    defaultvalue = "0",
+    flags = CV_SHOWMODIF|CV_SAVE,
+    PossibleValue = CV_OnOff
+})
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rsnick" then
+		if (ptcpr_snickabilitything.value == 1)
+			player.charability2 = CA2_SPINDASH
+		elseif (ptcpr_snickabilitything.value == 0)
+			player.charability2 = CA2_NONE
+		end
+	end
+end)
+
+addHook("AbilitySpecial", function(player)
+	if player.mo.skin != "rsnick"
+		return 
+	end
+	if player.pflags&PF_THOKKED
+		return true
+	end
+	if (ptcpr_snickabilitything.value == 0)
+		return true
+	end
+	local actionspd = FixedMul(player.mo.scale, player.actionspd)
+	if player.mo.eflags & MFE_UNDERWATER
+		actionspd = $/2
+	end
+	P_InstaThrust(player.mo, player.mo.angle, actionspd)
+	player.dashmode = DASHMODE_MAX
+	P_SpawnThokMobj(player)
+	S_StartSound(player.mo, sfx_thok)
+	player.pflags = $|PF_THOKKED 
+	return true
+end)

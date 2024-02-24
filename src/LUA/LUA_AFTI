@@ -1,0 +1,231 @@
+//from clairebun
+//https://wiki.srb2.org/wiki/User:Clairebun/Sandbox/Common_Lua_Functions#L_Choose
+local function choosething(...)
+	local args = {...}
+	local choice = P_RandomRange(1,#args)
+	return args[choice]
+end
+
+//sorry but you may not copy this function or the afterimage object
+//and the afterimage object thinker! please, wait for the next soap update
+//I've been a bit busy recently, working on quite a few mods, but I'd thought I'd come back here and make this addon completely reusable. You can now use the afterimaging spawning code AND the afterimages' thinker! If the code says otherwise, just ignore it! - luigi budd, 2023
+local function creatafterimage(p,me,color1,color2)
+	local ghost = P_SpawnMobjFromMobj(me,0,0,0,MT_PTAI_AFTERIMAGE_OBJECT)
+	ghost.target = me
+	
+	ghost.skin = me.skin
+	ghost.scale = me.scale
+	
+	ghost.sprite = me.sprite
+	
+	ghost.state = me.state
+	ghost.sprite2 = me.sprite2
+	ghost.frame = me.frame
+	
+	ghost.angle = p.drawangle
+	
+	
+	ghost.color = choosething(color1,color2)
+	ghost.spritexscale,ghost.spriteyscale = me.spritexscale, me.spriteyscale
+	
+	return ghost
+
+end
+//after image
+addHook("MobjThinker", function(ai)
+	if not ai
+	or not ai.valid
+		return
+	end
+	
+	//we need a thing to follow
+	if not ai.target
+	or not ai.target.valid
+		P_RemoveMobj(ai)
+		return
+	end
+	
+	
+	if (leveltime % 6) > 3
+//		ai.frame = $|TR_TRANS70
+		ai.flags2 = $|MF2_DONTDRAW
+	else
+//		ai.frame = $ &~TR_TRANS70
+		ai.flags2 = $ &~MF2_DONTDRAW
+	end
+	
+	local p = ai.target.player
+	local me = p.mo
+	
+	ai.spritexoffset = me.spritexoffset
+	ai.spriteyoffset = me.spriteyoffset
+	
+	ai.colorized = true
+	if not ai.timealive
+		ai.timealive = 1
+	else
+		ai.timealive = $+1
+	end
+	
+	//no interpolation please fingers crossed???????
+	//i said PLEASE`
+	P_SetOrigin(ai, ai.x, ai.y, ai.z)
+	
+	local chasecam = CV_FindVar("chasecam")
+	
+	if not chasecam.value
+		ai.flags2 = $|MF2_DONTDRAW
+	end
+	
+	local fuselimit = 3
+
+/*
+	if ai.soapsupertauntclone
+		fuselimit = SoapFetchConstant("afterimages_st_fuse")
+		ai.tics = -1
+	end
+*/
+	
+	//because fuse doesnt wanna work
+	if ai.timealive > fuselimit
+		P_RemoveMobj(ai)
+		return
+	end
+	
+end, MT_PTAI_AFTERIMAGE_OBJECT)
+
+//io
+addHook("PlayerSpawn", function(p)
+	if io and p == consoleplayer and p.ptaistyle == nil and p.ptaispeed == nil
+		
+		local file = io.openlocal("client/pizzatowerai/style.dat")
+		if file
+	//		print("Opening style.dat...")
+			local string = file:read("*a")
+			if string == "3"
+				COM_BufInsertText(p, "ptai_style 3")
+			elseif string == "2"
+				COM_BufInsertText(p, "ptai_style 2")
+			elseif string == "1" or string == nil
+				COM_BufInsertText(p, "ptai_style 1")
+			end
+			file:close()
+//			print("Closed style.dat.")
+		else
+			COM_BufInsertText(p, "ptai_style 1")
+		end
+		
+		local file = io.openlocal("client/pizzatowerai/activation.dat")
+		if file
+			local string = file:read("*a")
+			if string == "0"
+				COM_BufInsertText(p, "ptai_active 0")
+			elseif string == "1" or string == nil
+				COM_BufInsertText(p, "ptai_active 1")
+			end
+			file:close()
+		else
+			//no file? activeness set to nil? lets fix that here!
+			p.ptaispeed = 0
+		end
+		
+		local file = io.openlocal("client/pizzatowerai/color1.dat")
+		if file
+			COM_BufInsertText(p, "ptai_color1 \""..file:read("*a").."\" s")
+		else
+			COM_BufInsertText(p, "ptai_color1 red s")
+		end
+
+		local file = io.openlocal("client/pizzatowerai/color2.dat")
+		if file
+			COM_BufInsertText(p, "ptai_color2 \""..file:read("*a").."\" s")
+		else
+			COM_BufInsertText(p, "ptai_color2 green s")
+		end
+
+	end
+	
+end)
+
+//do afterimaging
+addHook("PlayerThink", function(p)
+if not p.valid
+return
+end
+
+if not p.ptaiinit
+	PTAIinit(p)
+return
+end
+
+	//this is kind stupid but whatever
+	//soap
+    if (p == server) or (p == admin)
+	or IsPlayerAdmin(p)
+        p.ptaielevated = 1
+    else
+        p.ptaielevated = 0
+    end
+
+    if p.mo.valid and p.mo
+	and PizzaTowerAICandidates[p.mo.skin]
+    local me = p.mo
+	local skin = skins[me.skin]
+		p.accSpeed = abs(FixedHypot(p.rmomx,p.rmomy)) //more accurate speed thing
+		p.ptaispecialskin = 0
+			//soap already does this. the only thing we need from here is p.ptaistyle
+			if me.skin == "soapthehedge"
+			and p.soaptable
+				if not (17 <= #p.soaptable) 
+					return
+				end
+			end
+			
+//			PizzaTowerAICheckForSpecialSkins(p, me)
+			p.ptaispecialskin = PizzaTowerAICandidates[me.skin][1]
+			
+			//make after images when we're going fast!!!
+			if (p.dashmode >= (3*TICRATE)) 
+			or ((p.powers[pw_sneakers]) and (p.accSpeed > p.runspeed)) 
+			//some characters dont have "real" dashmode (ex: junio, blaze, chrispychars),
+			//so we'll need an extra check for those skins
+			or ((p.accSpeed > skin.normalspeed) and (p.ptaispeed or p.ptaispecialskin))
+			and not (p.pflags & PF_STARTDASH)
+			or (p.mo.superjump)
+			or (p.mo.noisesuperjump)
+			or (p.mo.snicksuperjump)
+			or (p.mo.fakepepsuperjump)
+			and (p.playerstate == PST_LIVE)
+				
+				p.ptaiframing = 1
+				
+				local color = SKINCOLOR_AIREALLYRED
+				local color2 = SKINCOLOR_AIREALLYGREEN
+				
+				if not (PizzaTowerAICandidates[me.skin][3])
+					if p.ptaistyle and (p.ptaistyle == 2)
+						
+						color = SKINCOLOR_AIREALLYBLUE
+						color2 = SKINCOLOR_AIREALLYPINK
+						
+					elseif p.ptaistyle and (p.ptaistyle == 3)
+					and ((p.ptaicolor1) and (p.ptaicolor2))
+					and PizzaTowerAICandidates[me.skin][2]
+					
+						color = p.ptaicolor1
+						color2 = p.ptaicolor2
+						
+					end
+				else
+					color = PizzaTowerAICandidates[me.skin][4]
+					color2 = PizzaTowerAICandidates[me.skin][5]
+				end
+				
+				creatafterimage(p,me,color,color2)
+			else
+				p.ptaiframing = 0
+			end
+			
+
+	end
+end)

@@ -1,0 +1,49 @@
+local ptcpr_noisespin = CV_RegisterVar({
+    name = "noisespin",
+    defaultvalue = "0",
+    flags = CV_SHOWMODIF|CV_SAVE,
+    PossibleValue = CV_OnOff
+})
+
+local ptcpr_glidegrab = CV_RegisterVar({
+    name = "glidegrab",
+    defaultvalue = "0",
+    flags = CV_SHOWMODIF|CV_SAVE,
+    PossibleValue = CV_OnOff
+})
+
+local ptcpr_gunpep = CV_RegisterVar({
+    name = "gunpep",
+    defaultvalue = "0",
+    flags = CV_SHOWMODIF|CV_SAVE,
+    PossibleValue = CV_OnOff
+})
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rnoise" then
+		if (ptcpr_noisespin.value == 1)
+			player.charability2 = CA2_SPINDASH
+		elseif (ptcpr_noisespin.value == 0)
+			player.charability2 = CA2_NONE
+		end
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rpeppino" then
+		if (ptcpr_gunpep.value == 1)
+			player.charability2 = CA2_GUNSLINGER
+		elseif (ptcpr_gunpep.value == 0)
+			player.charability2 = CA2_NONE
+		end
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rpeppino" then
+		if (ptcpr_glidegrab.value == 1)
+			player.charability = CA_GLIDEANDCLIMB
+		elseif (ptcpr_glidegrab.value == 0)
+			player.charability = CA_NONE
+		end
+	end
+end)

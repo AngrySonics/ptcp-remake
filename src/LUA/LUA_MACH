@@ -1,0 +1,7 @@
+addHook("PlayerThink", function(player)
+    if player.mo.skin == "rpeppino" or player.mo.skin == "rnoise" or player.mo.skin == "rsnick" or player.mo.skin == "rfakepep"
+		if (player.powers[pw_justsprung] or player.mo.eflags & MFE_SPRUNG) and player.mo.state != S_PLAY_SPRING then 
+			player.dashmode = DASHMODE_MAX
+		end
+    end
+end)

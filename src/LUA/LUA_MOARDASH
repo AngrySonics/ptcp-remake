@@ -1,0 +1,66 @@
+//credit to Icezer for the original "superdash" thing
+freeslot("SPR2_MAC4","S_PLAY_PEPPINO_MACH4","S_PLAY_NOISE_MACH4","S_PLAY_SNICK_MACH4")
+
+states[S_PLAY_PEPPINO_MACH4] = {
+  sprite = SPR_PLAY,
+  frame = SPR2_MAC4,
+  tics = 1,
+  nextstate = S_PLAY_PEPPINO_MACH4
+}
+
+states[S_PLAY_NOISE_MACH4] = {
+  sprite = SPR_PLAY,
+  frame = SPR2_MAC4,
+  tics = 1,
+  nextstate = S_PLAY_NOISE_MACH4
+}
+
+states[S_PLAY_SNICK_MACH4] = {
+  sprite = SPR_PLAY,
+  frame = SPR2_MAC4,
+  tics = 1,
+  nextstate = S_PLAY_SNICK_MACH4
+}
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rpeppino" then
+		if player.dashmode >= 3*TICRATE and player.speed >= 70*FRACUNIT and P_IsObjectOnGround(player.mo) and not (player.pflags & PF_SPINNING)
+			player.mo.state = S_PLAY_PEPPINO_MACH4
+		end
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rnoise" then
+		if player.dashmode >= 3*TICRATE and player.speed >= 70*FRACUNIT and P_IsObjectOnGround(player.mo) and not (player.pflags & PF_SPINNING)
+			player.mo.state = S_PLAY_NOISE_MACH4
+		end
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.mo.skin == "rsnick" then
+		if player.dashmode >= 3*TICRATE and player.speed >= 70*FRACUNIT and P_IsObjectOnGround(player.mo) and not (player.pflags & PF_SPINNING)
+			player.mo.state = S_PLAY_SNICK_MACH4
+		end
+	end
+end)
+
+//the following code was brought to me by TGTLS, developer of Proper Peppino. i just made a few modifications to it. thanks!
+addHook("PlayerThink", function(player)
+	if player.dashmode < 3*TICRATE and player.mo.state == S_PLAY_PEPPINO_MACH4
+		player.mo.state = S_PLAY_RUN
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.dashmode < 3*TICRATE and player.mo.state == S_PLAY_NOISE_MACH4
+		player.mo.state = S_PLAY_RUN
+	end
+end)
+
+addHook("PlayerThink", function(player)
+	if player.dashmode < 3*TICRATE and player.mo.state == S_PLAY_SNICK_MACH4
+		player.mo.state = S_PLAY_RUN
+	end
+end)
