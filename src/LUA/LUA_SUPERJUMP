@@ -349,7 +349,7 @@ end)
 
 addHook("ThinkFrame", do
 	for player in players.iterate
-		if (player.mo.superjump) and (player.cmd.buttons & BT_SPIN)  and (ptcpr_globalsagesjcancel.value == 0)
+		if (player.mo.superjump) and (player.cmd.buttons & BT_SPIN)  and (ptcpr_globalsagesjcancel.value == 0) and not P_IsObjectOnGround(player.mo)
 		S_StopSoundByID(player.mo, sfx_psjr)
 		S_StartSound(player.mo, sfx_psjc)
 		player.mo.state = S_PLAY_SUPERJUMP_CANCEL_START
@@ -360,7 +360,7 @@ end)
 
 addHook("ThinkFrame", do
 	for player in players.iterate
-		if (player.mo.noisesuperjump) and (player.cmd.buttons & BT_SPIN)  and (ptcpr_globalsagesjcancel.value == 0)
+		if (player.mo.noisesuperjump) and (player.cmd.buttons & BT_SPIN)  and (ptcpr_globalsagesjcancel.value == 0) and not P_IsObjectOnGround(player.mo)
 		S_StopSoundByID(player.mo, sfx_psjr)
 		S_StartSound(player.mo, sfx_psjc)
 		player.mo.state = S_PLAY_NOISE_SUPERJUMP_CANCEL_START
@@ -371,7 +371,7 @@ end)
 
 addHook("ThinkFrame", do
 	for player in players.iterate
-		if (player.mo.snicksuperjump) and (player.cmd.buttons & BT_SPIN)
+		if (player.mo.snicksuperjump) and (player.cmd.buttons & BT_SPIN) and not P_IsObjectOnGround(player.mo)
 		P_InstaThrust(player.mo, player.mo.angle, 50*FRACUNIT)
 		P_SetObjectMomZ(player.mo, 0*FRACUNIT, false)
 		player.dashmode = DASHMODE_MAX
@@ -383,7 +383,7 @@ end)
 
 addHook("ThinkFrame", do
 	for player in players.iterate
-		if (player.mo.superjump) and (player.cmd.buttons & BT_SPIN) and (ptcpr_globalsagesjcancel.value == 1)
+		if (player.mo.superjump) and (player.cmd.buttons & BT_SPIN) and (ptcpr_globalsagesjcancel.value == 1) and not P_IsObjectOnGround(player.mo)
 		P_InstaThrust(player.mo, player.mo.angle, 50*FRACUNIT)
 		P_SetObjectMomZ(player.mo, 0*FRACUNIT, false)
 		player.dashmode = DASHMODE_MAX
@@ -395,7 +395,7 @@ end)
 
 addHook("ThinkFrame", do
 	for player in players.iterate
-		if (player.mo.noisesuperjump) and (player.cmd.buttons & BT_SPIN) and (ptcpr_globalsagesjcancel.value == 1)
+		if (player.mo.noisesuperjump) and (player.cmd.buttons & BT_SPIN) and (ptcpr_globalsagesjcancel.value == 1) and not P_IsObjectOnGround(player.mo)
 		P_InstaThrust(player.mo, player.mo.angle, 50*FRACUNIT)
 		P_SetObjectMomZ(player.mo, 0*FRACUNIT, false)
 		player.dashmode = DASHMODE_MAX
@@ -407,7 +407,7 @@ end)
 
 addHook("ThinkFrame", do
 	for player in players.iterate
-		if (player.mo.fakepepsuperjump) and (player.cmd.buttons & BT_SPIN)
+		if (player.mo.fakepepsuperjump) and (player.cmd.buttons & BT_SPIN) and not P_IsObjectOnGround(player.mo)
 		P_InstaThrust(player.mo, player.mo.angle, 50*FRACUNIT)
 		P_SetObjectMomZ(player.mo, 0*FRACUNIT, false)
 		player.dashmode = DASHMODE_MAX
